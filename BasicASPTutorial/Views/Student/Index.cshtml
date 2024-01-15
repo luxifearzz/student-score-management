@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Student>;
+@{
+    ViewData["Title"] = "หน้าแรก";
+}
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-secondary">ไม่มีข้อมูลนักเรียนในระบบ</div>
+}
+else
+{
+    int count = 0;
+    <h1 style="color:blue;" class="text-center">ระบบบันทึกคะแนน</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ลำดับที่</th>
+                <th>รหัสนักเรียน</th>
+                <th>ชื่อนักเรียน</th>
+                <th>คะแนน</th>
+                <th>สถานะ</th>
+                <th>แก้ไข</th>
+                <th>ลบ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Score</td>
+                    @if (student.Score >= 50)
+                    {
+                        <td class="text-success">ผ่าน</td>
+                    }
+                    else
+                    {
+                        <td class="text-danger">ไม่ผ่าน</td>
+                    }
+                    <td>
+                        <a class="btn btn-warning"
+                           asp-controller="Student"
+                           asp-action="Edit"
+                           asp-route-id="@student.Id">แก้ไข</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger"
+                           asp-controller="Student"
+                           asp-action="Delete"
+                           asp-route-id="@student.Id"
+                           onclick="return confirm('คุณต้องการลบ @student.Name\(id @student.Id\) หรือไม่ ?')">ลบ</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
